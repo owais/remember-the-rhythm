@@ -8,10 +8,10 @@ from gi.repository import RB
 from gi.repository import GLib
 
 
-CONFIG_FILE = os.path.join(GLib.get_user_config_dir(), 'remember-the-song.last')
+CONFIG_FILE = os.path.join(GLib.get_user_config_dir(), 'remember-the-rhythm.last')
 
-class RememberTheSong(GObject.Object, Peas.Activatable):
-    __gtype_name = 'RememberTheSong'
+class RememberTheRhythm(GObject.Object, Peas.Activatable):
+    __gtype_name = 'RememberTheRhythm'
     object = GObject.property(type=GObject.Object)
     location = None
     playback_time = None

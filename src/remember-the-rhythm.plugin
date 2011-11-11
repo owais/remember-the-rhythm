@@ -1,8 +1,8 @@
 [Plugin]
 Loader=python
-Module=remember-the-song
+Module=remember-the-rhythm
 IAge=1
-Name=Remember the song
+Name=Remember the Rhythm
 Description=Remembers last playing song and resumes on startup
 Authors=Owais Lone <hello@owaislone.org>
 Copyright=Copyright © 2011 Owais Lone

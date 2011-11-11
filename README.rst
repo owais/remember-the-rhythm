@@ -1,11 +1,8 @@
-===================
-Remember The Song
-===================
+====================
+Remember The Rhythm
+====================
 
-
-A simple plugin for rhythmbox which remembers the last playing song + 
-playback time and resumes playback from that point when rhythmbox
-restarts.
+A plugin for rhythbox to remember last playing song and playback time.
 
 -------------
 Requirements

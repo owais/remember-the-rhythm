@@ -1,0 +1,14 @@
+Source: remember-the-rhythm
+Section: gnome
+Priority: extra
+Maintainer: Owais Lone <hello@owaislone.org>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: https://github.com/owais/temember-the-rhythm
+Vcs-Git: git://github.com/owais/temember-the-rhythm.git
+
+Package: remember-the-rhythm
+Architecture: all
+Depends: rhythmbox
+Description: Remember the rhythm
+ A plugin for rhythbox to remember last playing song and playback time.
