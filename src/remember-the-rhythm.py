@@ -35,10 +35,7 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
         self.shell_player.connect('playing-song-changed', self.playing_changed)
 
     def do_deactivate(self):
-        config_file = open(CONFIG_FILE, 'w')
-        config_data = '\n'.join([self.location, self.playback_time])
-        config_file.write(config_data)
-        config_file.close()
+        self.save_rhythm()
 
     def load_complete(self, *args, **kwargs):
         if self.location:
@@ -48,9 +45,16 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
             if self.playback_time:
                 self.shell_player.set_playing_time(long(self.playback_time))
 
+    def save_rhythm(self):
+        config_file = open(CONFIG_FILE, 'w')
+        config_data = '\n'.join([self.location, self.playback_time])
+        config_file.write(config_data)
+        config_file.close()
+
     def playing_changed(self, player, entry, data=None):
         try:
             self.location = str(entry.get_string(RB.RhythmDBPropType.LOCATION))
+            self.save_rhythm()
         except:
             pass
 
