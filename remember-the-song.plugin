@@ -1,0 +1,9 @@
+[Plugin]
+Loader=python
+Module=remember-the-song
+IAge=1
+Name=Remember the song
+Description=Remembers last playing song and resumes on startup
+Authors=Owais Lone <hello@owaislone.org>
+Copyright=Copyright © 2011 Owais Lone
+Website=http://owaislone.org/
