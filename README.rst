@@ -14,10 +14,30 @@ Rhythmbox 2.90 or above
 Installation
 -------------
 
-Install manually from tarball::
+
+Ubuntu Repository
+~~~~~~~~~~~~~~~~~~
+
+::
+
+    sudo add-apt-repository ppa:loneowais/ppa
+    sudo apt-get update
+    sudo apt-get install remember-the-rhythm
+
+
+From Source
+~~~~~~~~~~~~
+
+Install:
+````````
+
+::
 
     sudo make install
 
-To remove::
+Remove
+```````
+
+::
 
      sudo make uninstall
