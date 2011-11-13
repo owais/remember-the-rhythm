@@ -29,9 +29,9 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
         self.shell = self.object
         self.shell_player = self.shell.props.shell_player
         self.db = self.shell.props.db
-        self.shell_player.connect('elapsed-changed', self.elapsed_changed)
-        self.shell_player.connect('playing-song-changed', self.playing_changed)
+        self.shell_player.connect('playing-song-changed', self.playing_song_changed)
         self.shell.connect('database-load-complete', self.load_complete)
+        self.shell_player.connect('elapsed-changed', self.elapsed_changed)
 
     def do_deactivate(self):
         self.save_rhythm()
@@ -44,19 +44,18 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
             self.shell_player.play_entry(entry, source)
             self.first_run = True
 
-    def playing_changed(self, player, entry, data=None):
+    def playing_song_changed(self, player, entry, data=None):
         if self.first_run:
-            self.shell_player.set_playing_time(long(self.playback_time))
+            self.shell_player.set_playing_time(self.playback_time)
             self.shell_player.set_mute(False)
             self.first_run = False
             return
 
         try:
             self.location = entry.get_string(RB.RhythmDBPropType.LOCATION)
-            #if not new_location == self.location:
-            #    GObject.idle_add(self.save_rhythm, '0')
         except:
             return
+
         GObject.idle_add(self.save_rhythm, 0)
 
     def elapsed_changed(self, player, entry, data=None):
