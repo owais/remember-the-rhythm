@@ -1,40 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 from gi.repository import GObject
 from gi.repository import Peas
 from gi.repository import RB
-from gi.repository import GLib
+from gi.repository import Gio
 
 
-CONFIG_FILE = os.path.join(
-        GLib.get_user_config_dir(),
-        'remember-the-rhythm.last'
-        )
+GSETTINGS_KEY = "org.gnome.rhythmbox.plugins.remember-the-rhythm"
+KEY_PLAYBACK_TIME = 'playback-time'
+KEY_LOCATION = 'last-entry-location'
+
 
 class RememberTheRhythm(GObject.Object, Peas.Activatable):
 
     __gtype_name = 'RememberTheRhythm'
-
     object = GObject.property(type=GObject.Object)
-    location = None
-    playback_time = 0
+
     first_run = False
 
     def __init__(self):
         GObject.Object.__init__(self)
-        try:
-            config_file = open(CONFIG_FILE, 'r')
-            config_data = config_file.read()
-            config_file.close()
-        except IOError:
-            return
-
-        config_data = config_data.split()
-        if config_data:
-            self.location = config_data[0]
-            self.playback_time = long(config_data[1])
+        self.settings = Gio.Settings.new(GSETTINGS_KEY)
+        self.location = self.settings.get_string(KEY_LOCATION)
+        self.playback_time = self.settings.get_uint(KEY_PLAYBACK_TIME)
 
     def do_activate(self):
         self.shell = self.object
@@ -79,7 +68,5 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
     def save_rhythm(self, pb_time=None):
         if self.location:
             pb_time = pb_time == None and self.playback_time or pb_time
-            config_file = open(CONFIG_FILE, 'w')
-            config_data = '\n'.join([self.location, str(pb_time)])
-            config_file.write(config_data)
-            config_file.close()
+            self.settings.set_uint(KEY_PLAYBACK_TIME, pb_time)
+            self.settings.set_string(KEY_LOCATION, self.location)

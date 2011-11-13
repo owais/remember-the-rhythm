@@ -1,3 +1,9 @@
+remember-the-rhythm (0.1.4) oneiric; urgency=low
+
+  * Fixed possible noise while resuming playback on slow systems
+
+ -- Owais Lone <hello@owaislone.org>  Sat, 12 Nov 2011 03:59:14 +0530
+
 remember-the-rhythm (0.1.3) oneiric; urgency=low
 
   * Fixed homepage string

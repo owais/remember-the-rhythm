@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.rhythmbox.plugins.remember-the-rhythm" path="/org/gnome/rhythmbox/plugins/remember-the-rhythm/">
+    <key type="s" name="last-entry-location">
+      <default>''</default>
+      <summary>Location of the last playing entry</summary>
+      <description>This entry will be automatically played by rhythmbox upon startup and will be changed to last playing entry upon shutdown.</description>
+    </key>
+    <key type="u" name="playback-time">
+      <default>0</default>
+      <summary>Playback time of the last playing entry</summary>
+      <description>Rhythmbox will resume playback from time second on the last playing entry</description>
+    </key>
+  </schema>
+</schemalist>
