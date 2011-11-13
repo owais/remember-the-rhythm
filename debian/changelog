@@ -1,3 +1,9 @@
+remember-the-rhythm (0.1.5) oneiric; urgency=low
+
+  * Moved settings to GSettings backend
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 13 Nov 2011 16:42:05 +0530
+
 remember-the-rhythm (0.1.4) oneiric; urgency=low
 
   * Fixed possible noise while resuming playback on slow systems
