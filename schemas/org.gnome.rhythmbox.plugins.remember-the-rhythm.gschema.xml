@@ -11,5 +11,10 @@
       <summary>Playback time of the last playing entry</summary>
       <description>Rhythmbox will resume playback from time second on the last playing entry</description>
     </key>
+    <key type="aas" name="browser-values">
+      <default>[[],[],[]]</default>
+      <summary>Genre/Artist/Album</summary>
+      <description>Remembers the filters in RBLibraryBrowser and sets on start up</description>
+    </key>
   </schema>
 </schemalist>
