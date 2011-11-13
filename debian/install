@@ -1,2 +1,2 @@
 src/* /usr/lib/rhythmbox/plugins/remember-the-rhythm
-schemas/* /usr/lib/glib-2.0/schemas
+schemas/* /usr/share/glib-2.0/schemas

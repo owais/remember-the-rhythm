@@ -9,6 +9,6 @@ Vcs-Git: git://github.com/owais/temember-the-rhythm.git
 
 Package: remember-the-rhythm
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, rhythmbox
+Depends: ${misc:Depends}, rhythmbox
 Description: Remember the rhythm
  A plugin for rhythbox to remember last playing song and playback time.
