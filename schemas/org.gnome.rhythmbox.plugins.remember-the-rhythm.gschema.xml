@@ -16,5 +16,10 @@
       <summary>Genre/Artist/Album</summary>
       <description>Remembers the filters in RBLibraryBrowser and sets on start up</description>
     </key>
+    <key type="s" name="playlist">
+      <default>''</default>
+      <summary>Last playlist</summary>
+      <description>Name of the last playing playlist if any</description>
+    </key>
   </schema>
 </schemalist>

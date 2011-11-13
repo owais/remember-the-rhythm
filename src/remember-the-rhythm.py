@@ -11,6 +11,8 @@ from gi.repository.GLib import Variant
 GSETTINGS_KEY = "org.gnome.rhythmbox.plugins.remember-the-rhythm"
 KEY_PLAYBACK_TIME = 'playback-time'
 KEY_LOCATION = 'last-entry-location'
+KEY_PLAYLIST = 'playlist'
+KEY_BROWSER_VALUES = 'browser-values'
 
 
 class RememberTheRhythm(GObject.Object, Peas.Activatable):
@@ -24,16 +26,20 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
         GObject.Object.__init__(self)
         self.settings = Gio.Settings.new(GSETTINGS_KEY)
         self.location = self.settings.get_string(KEY_LOCATION)
+        self.playlist = self.settings.get_string(KEY_PLAYLIST)
         self.playback_time = self.settings.get_uint(KEY_PLAYBACK_TIME)
-        self.browser_values_list = self.settings.get_value('browser-values')
+        self.browser_values_list = self.settings.get_value(KEY_BROWSER_VALUES)
+        self.source = None
 
     def do_activate(self):
         self.shell = self.object
         self.library = self.shell.props.library_source
         self.shell_player = self.shell.props.shell_player
         self.db = self.shell.props.db
+        self.playlist_manager = self.shell.get_playlist_manager()
         self.backend_player = self.shell_player.props.player
-        self.shell_player.connect('playing-song-changed', self.playing_song_changed)
+        self.shell_player.connect('playing-changed', self.playing_changed)
+        self.shell_player.connect('playing-source-changed', self.playing_source_changed)
         self.shell.connect('database-load-complete', self.load_complete)
         self.shell_player.connect('elapsed-changed', self.elapsed_changed)
 
@@ -43,27 +49,44 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
     def load_complete(self, *args, **kwargs):
         if self.location:
             entry = self.db.entry_lookup_by_location(self.location)
-            source = self.shell.guess_source_for_uri(self.location)
-            self.shell_player.play_entry(entry, source)
+            if self.playlist:
+                playlists = self.playlist_manager.get_playlists()
+                for playlist in playlists:
+                    if playlist.props.name == self.playlist:
+                        self.source = playlist
+                        break
+            if not self.source:
+                self.source = self.shell.guess_source_for_uri(self.location)
+            self.shell_player.set_playing_source(self.source)
+            self.shell_player.set_selected_source(self.source)
+            self.shell_player.play_entry(entry, self.source)
             self.first_run = True
 
-        GObject.idle_add(self.set_browser_values)
+    def playing_source_changed(self, player, source, data=None):
+        if source:
+            self.source = source
+            if self.source in self.playlist_manager.get_playlists():
+                self.settings.set_string('playlist', self.source.props.name)
+            else:
+                self.settings.set_string('playlist', '')
 
-    def playing_song_changed(self, player, entry, data=None):
+    def playing_changed(self, player, playing, data=None):
         if self.first_run:
             self.first_run = False
             try:
                 self.shell_player.set_playing_time(self.playback_time)
             except:
                 pass
+            GObject.idle_add(self.init_source)
             return
 
         try:
+            entry = self.shell_player.get_playing_entry()
             self.location = entry.get_string(RB.RhythmDBPropType.LOCATION)
+            GObject.idle_add(self.save_rhythm, 0)
         except:
             return
 
-        GObject.idle_add(self.save_rhythm, 0)
 
     def elapsed_changed(self, player, entry, data=None):
         try:
@@ -71,25 +94,28 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
         except:
             pass
 
-    def get_browser_values(self):
-        views = self.library.get_property_views()
-        browser_values_list = []
-        for view in views:
-            browser_values_list.append(view.get_selection())
-        self.browser_values_list = Variant('aas', browser_values_list)
-        self.settings.set_value('browser-values', self.browser_values_list)
+    def get_source_data(self):
+        if self.source:
+            views = self.source.get_property_views()
+            browser_values_list = []
+            for view in views:
+                browser_values_list.append(view.get_selection())
+            self.browser_values_list = Variant('aas', browser_values_list)
+            self.settings.set_value(KEY_BROWSER_VALUES, self.browser_values_list)
 
-    def set_browser_values(self):
-        views = self.library.get_property_views()
-        for i, view in enumerate(views):
-            value = self.browser_values_list[i]
-            view.set_selection(value)
+    def init_source(self):
+        if self.source:
+            views = self.source.get_property_views()
+            for i, view in enumerate(views):
+                value = self.browser_values_list[i]
+                view.set_selection(value)
+            self.shell.props.display_page_tree.select(self.source)
 
     def save_rhythm(self, pb_time=None):
         if self.location:
             pb_time = pb_time == None and self.playback_time or pb_time
             self.settings.set_uint(KEY_PLAYBACK_TIME, pb_time)
             self.settings.set_string(KEY_LOCATION, self.location)
-        self.get_browser_values()
+        GObject.idle_add(self.get_source_data)
 
 
