@@ -1,3 +1,9 @@
+remember-the-rhythm (0.2) oneiric; urgency=low
+
+  * Added support to remember Genre/Artist/Album
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 13 Nov 2011 23:12:39 +0530
+
 remember-the-rhythm (0.1.5) oneiric; urgency=low
 
   * Moved settings to GSettings backend
