@@ -1,3 +1,9 @@
+remember-the-rhythm (0.3.1) precise; urgency=low
+
+  * Some fixes to make it work on latest rhythmbox
+
+ -- Owais Lone <hello@owaislone.org>  Fri, 09 Dec 2011 21:20:37 +0530
+
 remember-the-rhythm (0.3) oneiric; urgency=low
 
   * Added support to remember playlists
