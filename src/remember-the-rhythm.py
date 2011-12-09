@@ -35,12 +35,12 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
         self.shell = self.object
         self.library = self.shell.props.library_source
         self.shell_player = self.shell.props.shell_player
+        self.playlist_manager = self.shell.props.playlist_manager
         self.db = self.shell.props.db
-        self.playlist_manager = self.shell.get_playlist_manager()
         self.backend_player = self.shell_player.props.player
         self.shell_player.connect('playing-changed', self.playing_changed)
         self.shell_player.connect('playing-source-changed', self.playing_source_changed)
-        self.shell.connect('database-load-complete', self.load_complete)
+        self.shell.props.db.connect('load-complete', self.load_complete)
         self.shell_player.connect('elapsed-changed', self.elapsed_changed)
 
     def do_deactivate(self):
@@ -108,8 +108,10 @@ class RememberTheRhythm(GObject.Object, Peas.Activatable):
             views = self.source.get_property_views()
             for i, view in enumerate(views):
                 value = self.browser_values_list[i]
-                view.set_selection(value)
+                if value:
+                    view.set_selection(value)
             self.shell.props.display_page_tree.select(self.source)
+            self.shell_player.jump_to_current()
 
     def save_rhythm(self, pb_time=None):
         if self.location:

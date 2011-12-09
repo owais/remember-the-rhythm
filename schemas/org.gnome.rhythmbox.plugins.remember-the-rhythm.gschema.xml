@@ -4,22 +4,22 @@
     <key type="s" name="last-entry-location">
       <default>''</default>
       <summary>Location of the last playing entry</summary>
-      <description>This entry will be automatically played by rhythmbox upon startup and will be changed to last playing entry upon shutdown.</description>
+      <description>This entry will be automatically played by rhythmbox upon startup.</description>
     </key>
     <key type="u" name="playback-time">
       <default>0</default>
       <summary>Playback time of the last playing entry</summary>
-      <description>Rhythmbox will resume playback from time second on the last playing entry</description>
+      <description>Rhythmbox will resume playback from this second.</description>
     </key>
     <key type="aas" name="browser-values">
-      <default>[[],[],[]]</default>
+      <default>[]</default>
       <summary>Genre/Artist/Album</summary>
-      <description>Remembers the filters in RBLibraryBrowser and sets on start up</description>
+      <description>Remembers the filters in RBLibraryBrowser and sets on start up.</description>
     </key>
     <key type="s" name="playlist">
       <default>''</default>
       <summary>Last playlist</summary>
-      <description>Name of the last playing playlist if any</description>
+      <description>Name of the last playing playlist if any.</description>
     </key>
   </schema>
 </schemalist>
